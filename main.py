@@ -16,4 +16,6 @@ def update_dataset(*args):
         df.loc[-1] = [name, email]
         df.reset_index(drop= True, inplace= True)
 
-    pd.to_csv(".\\database.csv")
+
+    print(df)
+    pd.to_csv(".\\database.csv", df)
