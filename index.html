@@ -8,23 +8,43 @@
         <link rel="stylesheet" href="https://pyscript.net/releases/2023.11.1/core.css" />
         <script type="module" src="https://pyscript.net/releases/2023.11.1/core.js"></script>
 
-        <py-env>
-            - pandas
-        </py-env>
-        <py-script src="main.py"></py-script>
+        <py-config>
+            packages = ["pandas"]
+        </py-config>
     </head>
 
     <body>
         <div class="container">
-            <form onsubmit="return false">
+            <form onsubmit="">
                 <h2>Log in:</h2>
                 
-                <input type="text" id="name" placeholder="Your Name">
-                <input type="email" id="email" placeholder="Your Email">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="email" id="email" placeholder="Your Email" required>
 
                 <button type="submit" py-click="update_dataset">Done</button>
             </form>
         </div>
+
+        <py-script>
+            import pandas as pd
+            from js import document
+
+            df1 = pd.DataFrame(columns=["name", "email"])
+
+            def update_dataset(*args):
+                name = document.getElementById("name").value
+                email = document.getElementById("email").value
+
+                if name == "" or email == "":
+                    return
+
+                if not df1["email"].isin([email]).any():
+                    df1.loc[-1] = [name, email]
+                    df1.reset_index(drop= True, inplace= True)
+
+                print(df1)
+        </py-script>
+        
     </body>
 
 </html>
